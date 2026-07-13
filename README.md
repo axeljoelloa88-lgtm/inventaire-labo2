@@ -75,8 +75,8 @@ docker compose ps
 ```
 
 ## Images Docker Hub
-- postgres : `ETUDIANT1/inventaire-postgres:1.0`
-- api      : `ETUDIANT2/inventaire-api:1.0`
+- postgres : loajoel88/inventaire-postgres:1.0
+- api      : loajoel88/inventaire-api:1.0
 
 ## Déploiement depuis Docker Hub (sans code source)
 Voir Partie B du laboratoire
