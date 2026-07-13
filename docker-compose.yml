@@ -1,0 +1,36 @@
+services:
+  postgres:
+    build: ./services/postgres
+    env_file: .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: ./services/api
+    env_file: .env
+    ports:
+      - "${API_PORT:-5000}:5000"
+    networks:
+      - app_net
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 4
+
+networks:
+  app_net:
+    driver: bridge
+
+volumes:
+  pgdata:
